@@ -1,0 +1,500 @@
+openapi: '3.0.2'
+info:
+  title: Wellbe API
+  version: '1.0'
+servers:
+  - url: https://api.wellbe.club/api/v1
+  - url: https://poly.wellbe.club/api/v1
+  - url: https://localhost/api/v1
+tags:
+  - name: users
+    description: Work with users data
+  - name: events
+    description: Manage event 
+
+components:
+  schemas:
+    event:
+      type: object
+      properties:
+        property:
+          type: integer
+    google_auth:
+      type: object
+      properties:
+        auth_token:
+          type: string
+          description: google id
+    refresh_password:
+      type: object
+      properties:
+        password:
+          type: string
+    reset_password:
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'example@mail.com'
+        redirect_url:
+          type: string
+          example: 'app.wellbe.club'  
+    jwt_tokens:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+    auth:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string  
+    emailcheck:
+      type: object
+      properties:
+        email:
+          type: string
+    registrition:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+    create_event:
+      type: object
+      properties:
+        start_time:
+          type: string
+          description: 'iso date time'
+          example: '2021-02-15T15:00+05:00'  
+        stop_time:
+          type: string
+          description: 'iso date time'
+          example: '2021-02-15T15:00+05:00'  
+        external_link_to_event:
+          type: string
+          description: 'external url'
+          example: 'https://vk.com'
+        is_public:
+          type: boolean
+          description: ''
+        event_master:
+          type: integer
+          description: 'user_id'
+        event_name:
+          type: string
+          description: ''
+        event_slaves:
+          type: array
+          description: ''
+          items:
+            type: integer
+            description: 'user_id'
+        labels:
+          type: array
+          description: ''
+          items:
+            type: integer
+            description: 'label_id'
+    
+                
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+
+paths:
+  /users/auth/sign_up/check_email/:
+    post:
+        description: 'Проверяет, доступен ли такой емаил в системе'
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/emailcheck'
+        responses:
+          '202':
+            description: Not already used - OK
+          '403':
+            description: Already used
+          '400':
+            description: Invalid request 
+        tags:
+          - users
+  /users/auth/sign_up/me/:
+    post:
+        description: 'Регистрирует пользователя'
+        parameters:
+        - in: query
+          name: redirect_url
+          description: Домен, на который должна вести ссылка из письма с подтверждением
+          required: true
+          schema:
+            type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registrition'
+        responses:
+          '201':
+            description: User created
+          '400':
+            description: Invalid request 
+        tags:
+          - users               
+  /users/auth/sign_up/confirm_email/:
+    post:
+        description: 'Повторно отправляет письмо с ссылкой для подтверждения аккаунта'
+        parameters:
+        - in: query
+          name: redirect_url
+          description: Домен, на который должна вести ссылка из письма с подтверждением
+          required: true
+          schema:
+            type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registrition'
+        responses:
+          '201':
+            description: User created
+          '400':
+            description: Invalid request 
+        tags:
+          - users  
+  /users/auth/sign_up/confirm_email/{token}:
+    get:
+      description: 'Подтверждает аккаунт'
+      parameters:
+      - in: path
+        description: Token from confirmation email
+        required: true
+        name: token
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Confirmed
+        '400':
+          description: Bad Token
+      tags:
+        - users  
+  /users/auth/sign_in/:
+    post:
+      description: Вход в систему
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth'
+      responses:
+        '200':
+          description: Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jwt_tokens'
+        '401':
+          description: Unauthorized
+      tags:
+        - users
+  /users/auth/reset_password:
+    post:
+      description: 'Отправляет email с ссылкой для сброса пароля'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reset_password'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Bad request
+      tags:
+        - users
+  /users/auth/reset_password/{reset_token}:
+    post:
+      description: 'Подтверждает аккаунт'
+      parameters:
+      - in: path
+        description: Token from reset_password email
+        required: true
+        name: reset_token
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/refresh_password'    
+      responses:
+        '200':
+          description: password refreshed
+        '400':
+          description: Bad request
+      tags:
+        - users  
+  /users/auth/me:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить данные своего аккаунта'  
+      responses:
+        '200':
+          description: password refreshed
+        '400':
+          description: Bad request
+      tags:
+        - users
+  /users/info/{user_id}:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить данные аккаунта'
+      parameters:
+      - in: path
+        description: user_id
+        required: true
+        name: user_id
+        schema:
+          type: integer  
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+      tags:
+        - users
+  /users/info/table:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить данные аккаунта'
+      parameters:
+      - in: query
+        description: сколько пользователей выводить за один запрос
+        required: false
+        example: 50
+        name: limit
+        schema:
+          type: integer
+      - in: query
+        description: номер страницы
+        required: false
+        example: 1
+        name: page
+        schema:
+          type: integer
+      - in: query
+        description: показывать только тех клиентов, кто связан со мной 
+        required: false
+        example: false
+        name: only_my_clients
+        schema:
+          type: boolean
+      - in: query
+        description: строка поиска, ищет по имени и почте
+        required: false
+        example: "Wellbe"
+        name: q
+        schema:
+          type: string
+      - in: query
+        description: id роли
+        required: false
+        example: 1
+        name: role_id
+        schema:
+          type: integer
+      - in: query
+        description: id специалиста
+        required: false
+        example: 1
+        name: expert_id
+        schema:
+          type: integer
+      - in: query
+        description: id кама
+        required: false
+        example: 1
+        name: coach_id
+        schema:
+          type: integer               
+
+      responses:
+        '200':
+          description: OK
+      tags:
+        - users            
+  /users/{user_id}/experts:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить специалистов аккаунта'
+      parameters:
+      - in: path
+        description: user_id
+        required: true
+        name: user_id
+        schema:
+          type: integer  
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+      tags:
+        - users
+  /social/google:
+    post:
+      description: 'Вход через гугл'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/google_auth"
+      responses:
+        200:
+          description: 'OK'
+        401:
+          description: 'Unauthorized'
+      tags:
+        - users
+  /events/create:
+    post:
+      security:
+        - Bearer: []
+      description: 'Создает ивент'
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref:  "#/components/schemas/create_event"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - events
+  /events/event/{event_id}:
+    get:
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          required: true 
+          name: event_id
+          schema:
+            type: integer
+            description: 'event_id'
+            example: 109
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - events    
+    delete:
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          required: true 
+          name: event_id
+          schema:
+            type: integer
+            description: 'event_id'
+            example: 109
+      responses:
+        200:
+          description: 'OK'
+        423:
+          description: 'This user cant delete event'
+      tags:
+        - events    
+    patch:
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          required: true 
+          name: event_id
+          schema:
+            type: integer
+            description: 'event_id'
+            example: 109
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/create_event"
+      responses:
+        200:
+          description: 'OK'
+        423:
+          description: 'This user cant change event'
+      tags:
+        - events
+  /events/get_user_events/{user_id}:
+    get:
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          required: true
+          name: user_id
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - events
+  /events/get_user_closest_event/{user_id}:
+    get:
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          required: true
+          name: user_id
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad request'
+      tags:
+        - events
+  /events/fake:
+    post:
+        security:
+          - Bearer: []
+        description: 'Фейк данные для календаря'
+        responses:
+          200:
+            description: 'OK'
+          400:
+            description: 'Bad request'
+        tags:
+          - events
+  
+
+
+
+
+
