@@ -10,15 +10,60 @@ tags:
   - name: users
     description: Work with users data
   - name: events
-    description: Manage event 
+    description: Manage event
+  - name: label
+    description: Manage labels
+  - name: color
+    description: Colors HEX
 
 components:
   schemas:
-    event:
+    refresh:
       type: object
       properties:
-        property:
+        refresh:
+          type: string
+    event_slaves:
+      type: object
+      properties:
+        event_slaves:
+          type: array
+          items:
+            type: integer
+            description: 'user_id'
+    label:
+      type: object
+      properties:
+        color:
           type: integer
+          description: color_id
+        hidden_for_client:
+          type: boolean
+        label_text:
+          type: string
+    label_event:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        label_id:
+          type: integer
+    label_user:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        label_id:
+          type: integer
+    add_expert:
+      type: object
+      properties:
+        experts:
+          type: array
+          items:
+            type: integer
+            description: 'user_id'
+            example: '[1,2,3]'
     google_auth:
       type: object
       properties:
@@ -67,7 +112,7 @@ components:
           type: string
         name:
           type: string
-    create_event:
+    event:
       type: object
       properties:
         start_time:
@@ -103,8 +148,7 @@ components:
           items:
             type: integer
             description: 'label_id'
-    
-                
+          
   securitySchemes:
     Bearer:
       type: apiKey
@@ -130,6 +174,7 @@ paths:
             description: Invalid request 
         tags:
           - users
+
   /users/auth/sign_up/me/:
     post:
         description: 'Регистрирует пользователя'
@@ -152,7 +197,8 @@ paths:
           '400':
             description: Invalid request 
         tags:
-          - users               
+          - users
+
   /users/auth/sign_up/confirm_email/:
     post:
         description: 'Повторно отправляет письмо с ссылкой для подтверждения аккаунта'
@@ -175,7 +221,8 @@ paths:
           '400':
             description: Invalid request 
         tags:
-          - users  
+          - users
+
   /users/auth/sign_up/confirm_email/{token}:
     get:
       description: 'Подтверждает аккаунт'
@@ -192,7 +239,8 @@ paths:
         '400':
           description: Bad Token
       tags:
-        - users  
+        - users
+
   /users/auth/sign_in/:
     post:
       description: Вход в систему
@@ -212,6 +260,45 @@ paths:
           description: Unauthorized
       tags:
         - users
+
+  /users/auth/logout/:
+    post:
+      security:
+        - Bearer: []
+      description: Выход из системы
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/refresh'
+      responses:
+        '204':
+          description: Logged out
+        '401':
+          description: Unauthorized
+      tags:
+        - users
+  
+  /users/auth/sign_in/refresh:
+    post:
+      description: Обновить токен
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/refresh'
+      responses:
+        '200':
+          description: Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jwt_tokens'
+        '401':
+          description: Unauthorized
+      tags:
+        - users
+
   /users/auth/reset_password:
     post:
       description: 'Отправляет email с ссылкой для сброса пароля'
@@ -227,6 +314,7 @@ paths:
           description: Bad request
       tags:
         - users
+
   /users/auth/reset_password/{reset_token}:
     post:
       description: 'Подтверждает аккаунт'
@@ -248,7 +336,8 @@ paths:
         '400':
           description: Bad request
       tags:
-        - users  
+        - users
+
   /users/auth/me:
     get:
       security: 
@@ -261,6 +350,7 @@ paths:
           description: Bad request
       tags:
         - users
+
   /users/info/{user_id}:
     get:
       security: 
@@ -280,6 +370,7 @@ paths:
           description: Bad request
       tags:
         - users
+
   /users/info/table:
     get:
       security: 
@@ -340,7 +431,8 @@ paths:
         '200':
           description: OK
       tags:
-        - users            
+        - users
+
   /users/{user_id}/experts:
     get:
       security: 
@@ -360,6 +452,73 @@ paths:
           description: Bad request
       tags:
         - users
+
+    post:
+      security: 
+        - Bearer: []   
+      description: 'Добавить специалистов'
+      parameters:
+      - in: path
+        description: user_id
+        required: true
+        name: user_id
+        schema:
+          type: integer 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/add_expert"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - users
+
+    delete:
+      security: 
+        - Bearer: []   
+      description: 'Удалить специалистов'
+      parameters:
+      - in: path
+        description: user_id
+        required: true
+        name: user_id
+        schema:
+          type: integer 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/add_expert"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - users
+
+    put:
+      security: 
+        - Bearer: []   
+      description: 'Заменить специалистов'
+      parameters:
+      - in: path
+        description: user_id
+        required: true
+        name: user_id
+        schema:
+          type: integer 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/add_expert"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - users              
+
   /social/google:
     post:
       description: 'Вход через гугл'
@@ -375,6 +534,7 @@ paths:
           description: 'Unauthorized'
       tags:
         - users
+
   /events/create:
     post:
       security:
@@ -384,12 +544,13 @@ paths:
         content:
           application/json:
             schema: 
-              $ref:  "#/components/schemas/create_event"
+              $ref:  "#/components/schemas/event"
       responses:
         200:
           description: 'OK'
       tags:
         - events
+
   /events/event/{event_id}:
     get:
       security:
@@ -406,7 +567,8 @@ paths:
         200:
           description: 'OK'
       tags:
-        - events    
+        - events
+
     delete:
       security:
         - Bearer: []
@@ -424,7 +586,8 @@ paths:
         423:
           description: 'This user cant delete event'
       tags:
-        - events    
+        - events
+
     patch:
       security:
         - Bearer: []
@@ -440,7 +603,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref:  "#/components/schemas/create_event"
+              $ref:  "#/components/schemas/event"
       responses:
         200:
           description: 'OK'
@@ -448,6 +611,57 @@ paths:
           description: 'This user cant change event'
       tags:
         - events
+  
+  /events/event/{event_id}/add_users:
+    post:
+      security:
+          - Bearer: []
+      parameters:
+        - in: path
+          required: true 
+          name: event_id
+          schema:
+            type: integer
+            description: 'event_id'
+            example: 109
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/event_slaves"
+      responses:
+        200:
+          description: 'OK'
+        423:
+          description: 'This user cant change event'
+      tags:
+        - events
+
+  /events/event/{event_id}/remove_users:
+    delete:
+      security:
+          - Bearer: []
+      parameters:
+        - in: path
+          required: true 
+          name: event_id
+          schema:
+            type: integer
+            description: 'event_id'
+            example: 109
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/event_slaves"
+      responses:
+        200:
+          description: 'OK'
+        423:
+          description: 'This user cant change event'
+      tags:
+        - events      
+
   /events/get_user_events/{user_id}:
     get:
       security:
@@ -463,6 +677,7 @@ paths:
           description: 'OK'
       tags:
         - events
+
   /events/get_user_closest_event/{user_id}:
     get:
       security:
@@ -480,6 +695,7 @@ paths:
           description: 'Bad request'
       tags:
         - events
+
   /events/fake:
     post:
         security:
@@ -492,6 +708,117 @@ paths:
             description: 'Bad request'
         tags:
           - events
+  /labels/label/actionlabeluser:
+    post:
+      security:
+        - Bearer: []
+      description: 'Добавляет метку пользователю'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/label_user"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - label
+
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удаляет метку у пользователя'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/label_user"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - label
+
+  /labels/label/actionlabelevent:
+    post:
+      security:
+        - Bearer: []
+      description: 'Добавляет метку событию'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/label_event"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - label
+
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удаляет метку у события'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/label_event"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - label
+
+  /labels/label/{label_id}:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить метку'
+      parameters:
+      - in: path
+        description: label_id
+        required: true
+        name: label_id
+        schema:
+          type: integer  
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+      tags:
+        - label
+
+  /labels/:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить все метки'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+      tags:
+        - label
+
+    post:
+      security:
+        - Bearer: []
+      description: 'Создать метку'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/label"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - label
+
+      
   
 
 
