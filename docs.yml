@@ -817,6 +817,14 @@ paths:
           description: 'OK'
       tags:
         - label
+  /colors:
+    get:
+      description: 'Получить все цвета'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - color
 
       
   
