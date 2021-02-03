@@ -825,6 +825,40 @@ paths:
           description: 'OK'
       tags:
         - color
+  /expert_profile/get_list:
+    get:
+      parameters:
+      - in: query
+        required: false
+        name: labels
+        schema:
+          type: array
+          items: 
+            type: integer
+            description: label_id
+          example: 1,2,3
+      - in: query
+        required: false
+        name: min_price
+        schema:
+          type: integer
+          example: 1200
+      - in: query
+        required: false
+        name: max_price
+        schema:
+          type: integer
+          example: 2200
+      - in: query
+        required: false
+        name: is_action_price
+        schema:
+          type: boolean
+          example: false
+        description: 'Цена по договоренности'
+      responses:
+        200:
+          description: 'OK'  
 
       
   
