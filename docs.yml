@@ -18,6 +18,35 @@ tags:
 
 components:
   schemas:
+    marketing_form:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        jsondata:
+          type: object
+          properties:
+            labels:
+              type: array
+              items:
+                type: integer
+                description: label_id
+            age:
+              type: integer
+            weight:
+              type: integer
+            height:
+              type: integer
+          example: {
+              "labels":[1, 2],
+              "age":31,
+              "height":67,
+              "gender":"female"
+          }
     refresh:
       type: object
       properties:
@@ -858,7 +887,18 @@ paths:
         description: 'Цена по договоренности'
       responses:
         200:
-          description: 'OK'  
+          description: 'OK'
+  /expert_profile/marketing_form:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/marketing_form"
+      responses:
+        200:
+          description: 'OK'
+
 
       
   
