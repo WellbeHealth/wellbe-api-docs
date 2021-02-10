@@ -35,18 +35,19 @@ components:
               items:
                 type: integer
                 description: label_id
+              example: [1,2]
             age:
               type: integer
+              example: 67
             weight:
               type: integer
+              example: 67
             height:
               type: integer
-          example: {
-              "labels":[1, 2],
-              "age":31,
-              "height":67,
-              "gender":"female"
-          }
+              example: 167
+            gender:
+              type: string
+              example: "female"
     refresh:
       type: object
       properties:
@@ -898,6 +899,20 @@ paths:
       responses:
         200:
           description: 'OK'
+  /expert_profile/get_random_list:
+    get:
+      description: 'Выдает рандомных спецов'
+      parameters:
+        - in: query
+          required: false
+          name: limit
+          schema:
+            type: integer
+            example: 3    
+      responses:
+        200:
+          description: 'OK'
+  
 
 
       
