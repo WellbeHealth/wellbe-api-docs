@@ -15,6 +15,8 @@ tags:
     description: Manage labels
   - name: color
     description: Colors HEX
+  - name: experts
+    description: Expert Profiles
 
 components:
   schemas:
@@ -48,6 +50,12 @@ components:
             gender:
               type: string
               example: "female"
+            message:
+              type: string
+              example: "ВИТАЛИК"
+            data:
+              type: string
+              example: "ISO STRING"
     refresh:
       type: object
       properties:
@@ -869,6 +877,12 @@ paths:
           example: 1,2,3
       - in: query
         required: false
+        name: limit
+        schema:
+          type: integer
+          example: 3
+      - in: query
+        required: false
         name: min_price
         schema:
           type: integer
@@ -889,6 +903,8 @@ paths:
       responses:
         200:
           description: 'OK'
+      tags:
+        - experts
   /expert_profile/marketing_form:
     post:
       requestBody:
@@ -899,6 +915,8 @@ paths:
       responses:
         200:
           description: 'OK'
+      tags:
+        - experts
   /expert_profile/get_random_list:
     get:
       description: 'Выдает рандомных спецов'
@@ -912,7 +930,30 @@ paths:
       responses:
         200:
           description: 'OK'
-  
+      tags:
+        - experts
+  /products/{product_id}:
+    get:
+      description: 'Дает данные о продукте'
+      parameters:
+        - in: path
+          required: true
+          name: product_id
+          schema:
+            type: integer
+        - in: query
+          required: false
+          name: token
+          description: 'Промокод'
+          schema:
+            type: string
+            example: eblan  
+      responses:
+        200:
+          description: 'OK'
+
+
+      
 
 
       
