@@ -958,6 +958,7 @@ paths:
         - in: path
           required: true
           name: text_id
+          example: 1
           schema:
             type: integer
       responses:
