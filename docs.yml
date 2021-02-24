@@ -951,6 +951,18 @@ paths:
       responses:
         200:
           description: 'OK'
+  /texts/{text_id}:
+    get:
+      description: 'Дает строку текста'
+      parameters:
+        - in: path
+          required: true
+          name: text_id
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'OK'
 
 
       
