@@ -20,6 +20,105 @@ tags:
 
 components:
   schemas:
+    get_timetable:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        start_time:
+          type: string
+          example: '2021-02-22'
+        finish_time:
+          type: string
+          example: '2021-03-22'
+    create_timetable:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        timezone:
+          type: integer
+        table:
+          type: object
+          properties:
+            Monday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Tuesday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Wednesday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Thursday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Friday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Saturday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
+            Sunday:
+              type: array
+              items:
+                type: object
+                properties:
+                  start_time:
+                    type: string
+                    example: '15:00'
+                  finish_time:
+                    type: string
+                    example: '15:00'
     marketing_form:
       type: object
       properties:
@@ -964,6 +1063,46 @@ paths:
       responses:
         200:
           description: 'OK'
+  /timetable/{user_id}:
+    get:
+      description: 'Дает график пользователя'
+      parameters:
+        - in: path
+          required: true
+          name: user_id
+          example: 1
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'OK'
+  /timetable/:
+    post:
+      description: Создает график пользователю
+      security:
+        - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/create_timetable"
+      responses:
+        200:
+          description: 'OK'
+  /timetable/timetable:
+    post:
+      description: 'Получить расписание пользователя в диапазоне дат'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/get_timetable"
+      responses:
+        200:
+          description: 'OK'
+
+      
+  
 
 
       
