@@ -128,15 +128,21 @@ components:
           type: string
         name:
           type: string
-        jsondata:
-          type: object
-          properties:
-            labels:
+        date:
+          type: string
+          example: "ISO STRING"
+        expert_profile:
+          type: integer
+          description: 'Id профиля спеца'
+        labels:
               type: array
               items:
                 type: integer
                 description: label_id
               example: [1,2]
+        jsondata:
+          type: object
+          properties:
             age:
               type: integer
               example: 67
@@ -152,9 +158,6 @@ components:
             message:
               type: string
               example: "ВИТАЛИК"
-            data:
-              type: string
-              example: "ISO STRING"
     refresh:
       type: object
       properties:
@@ -1004,18 +1007,6 @@ paths:
           description: 'OK'
       tags:
         - experts
-  /expert_profile/marketing_form:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref:  "#/components/schemas/marketing_form"
-      responses:
-        200:
-          description: 'OK'
-      tags:
-        - experts
   /expert_profile/get_random_list:
     get:
       description: 'Выдает рандомных спецов'
@@ -1092,6 +1083,31 @@ paths:
   /timetable/timetable:
     post:
       description: 'Получить расписание пользователя в диапазоне дат'
+      parameters:
+        - in: query
+          name: include_events
+          description: Включать ли в выдачу ивенты
+          example: true
+          schema:
+            type: boolean
+        - in: query
+          name: include_timetable
+          description: Включать ли в выдачу расписание. Если ивенты не включены, то слоты расписания будут без поправки на ивенты!
+          example: true
+          schema:
+            type: boolean
+        - in: query
+          name: events_min_duration
+          description: Фильтр по минимальной длине ивента
+          example: 60
+          schema:
+            type: integer
+        - in: query
+          name: timetable_min_duration
+          description: Фильтр по минимальной длине расписания
+          example: 40
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -1100,6 +1116,32 @@ paths:
       responses:
         200:
           description: 'OK'
+  /worksheets/expert_booking_form:
+    post:
+      description: 'Отправить данные анкеты'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/marketing_form"
+      responses:
+        200:
+          description: 'OK'
+  /worksheets/expert_booking_form/{uuid}:
+    get:
+      parameters:
+        - in: path
+          required: true
+          name: uuid
+          description: 'Токен анкеты'
+          example: '2c692a92-307a-4247-9747-996e71da93fc'
+          schema:
+            type: string
+      description: 'Получить анкету по токену'
+      responses:
+        200:
+          description: 'OK'
+    
 
       
   
