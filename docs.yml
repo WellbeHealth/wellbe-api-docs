@@ -140,7 +140,7 @@ components:
                 type: integer
                 description: label_id
               example: [1,2]
-        jsondata:
+        json_data:
           type: object
           properties:
             age:
