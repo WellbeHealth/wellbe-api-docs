@@ -1116,7 +1116,7 @@ paths:
       responses:
         200:
           description: 'OK'
-  /worksheets/expert_booking_form:
+  /worksheets/expert_booking_form/:
     post:
       description: 'Отправить данные анкеты'
       requestBody:
