@@ -33,6 +33,7 @@ components:
             product_uuid:
               type: string
               description: Not Null
+              example: "56e09589-1fb2-46ce-a7d4-6eafd60997e8"
             email:
               type: string
               description: Allowed null
