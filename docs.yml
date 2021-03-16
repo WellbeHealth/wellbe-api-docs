@@ -36,15 +36,18 @@ components:
             email:
               type: string
               description: Allowed null
+              example: null
             selected_time:
               type: string
               description: Allowed null
-              example: '2021-02-22'
+              example: null
             name:
               type: string
               description: Allowed null
+              example: null
             jsondata:
               type: object
+              example: null
                 
     phone_auth:
       type: object
