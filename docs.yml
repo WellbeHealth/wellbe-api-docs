@@ -20,6 +20,24 @@ tags:
 
 components:
   schemas:
+    phone_auth:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '+79920181131'
+          description: 'Работает только с номерами на +7'
+    phone_login:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '+79920181131'
+          description: 'Работает только с номерами на +7'
+        code:
+          type: string
+          example: '5201'
+          description: 'Всегда 4-значный код'
     get_timetable:
       type: object
       properties:
@@ -380,6 +398,38 @@ paths:
           description: Bad Token
       tags:
         - users
+  /social/phone/:
+    post:
+        description: 'Вход в систему по номеру телефона, если номера нет, регается юзер'
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/phone_auth"
+        responses:
+          '200':
+            description: Пользователь существует, код отправлен
+          '201':
+            description: Новый пользователь создан, код отправлен   
+        tags:
+          - users
+  /social/phone/auth:
+    post:
+        description: 'Вход в систему по номеру телефона, если номера нет, регается юзер'
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/phone_login"
+        responses:
+          '200':
+            description: Вход выполнен, токены отправлены
+          '401':
+            description: Вход не выполнен, подробности в msg
+        tags:
+          - users
 
   /users/auth/sign_in/:
     post:
