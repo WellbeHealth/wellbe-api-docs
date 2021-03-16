@@ -17,9 +17,35 @@ tags:
     description: Colors HEX
   - name: experts
     description: Expert Profiles
+  - name: payments
+    description: Заказы
+  - name: forms
+    description: Формы
 
 components:
   schemas:
+    checkup_booking:
+      type: object
+      properties:
+        jsondata:
+          type: object
+          properties:
+            product_uuid:
+              type: string
+              description: Not Null
+            email:
+              type: string
+              description: Allowed null
+            selected_time:
+              type: string
+              description: Allowed null
+              example: '2021-02-22'
+            name:
+              type: string
+              description: Allowed null
+            jsondata:
+              type: object
+                
     phone_auth:
       type: object
       properties:
@@ -137,45 +163,48 @@ components:
                   finish_time:
                     type: string
                     example: '15:00'
-    marketing_form:
+    expert_booking_form:
       type: object
       properties:
-        email:
-          type: string
-        phone:
-          type: string
-        name:
-          type: string
-        date:
-          type: string
-          example: "ISO STRING"
-        expert_profile:
-          type: integer
-          description: 'Id профиля спеца'
-        labels:
-              type: array
-              items:
-                type: integer
-                description: label_id
-              example: [1,2]
-        json_data:
+        jsondata:
           type: object
           properties:
-            age:
-              type: integer
-              example: 67
-            weight:
-              type: integer
-              example: 67
-            height:
-              type: integer
-              example: 167
-            gender:
+            email:
               type: string
-              example: "female"
-            message:
+            phone:
               type: string
-              example: "ВИТАЛИК"
+            name:
+              type: string
+            date:
+              type: string
+              example: "ISO STRING"
+            expert_profile:
+              type: integer
+              description: 'Id профиля спеца'
+            labels:
+                  type: array
+                  items:
+                    type: integer
+                    description: label_id
+                  example: [1,2]
+            json_data:
+              type: object
+              properties:
+                age:
+                  type: integer
+                  example: 67
+                weight:
+                  type: integer
+                  example: 67
+                height:
+                  type: integer
+                  example: 167
+                gender:
+                  type: string
+                  example: "female"
+                message:
+                  type: string
+                  example: "ВИТАЛИК"
     refresh:
       type: object
       properties:
@@ -1166,32 +1195,69 @@ paths:
       responses:
         200:
           description: 'OK'
-  /worksheets/expert_booking_form/:
+
+  /worksheets/buying/expert_booking_form/:
     post:
-      description: 'Отправить данные анкеты'
+      description: 'Сформировать счет для бронирования нутрициолога'
       requestBody:
         content:
           application/json:
             schema:
-              $ref:  "#/components/schemas/marketing_form"
+              $ref:  "#/components/schemas/expert_booking_form"
       responses:
         200:
           description: 'OK'
-  /worksheets/expert_booking_form/{uuid}:
+      tags:
+        - forms
+
+  /worksheets/buying/checkup_booking:
+    post:
+      security:
+        - Bearer: []
+      description: 'Сформировать счет для покупки чекапа'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/checkup_booking"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - forms
+
+  /payments/{payment_uuid}:
     get:
+      description: 'Получить данные заказа'
       parameters:
         - in: path
-          required: true
-          name: uuid
-          description: 'Токен анкеты'
-          example: '2c692a92-307a-4247-9747-996e71da93fc'
+          required: true 
+          name: payment_uuid
           schema:
             type: string
-      description: 'Получить анкету по токену'
+            description: 'payment_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
       responses:
         200:
           description: 'OK'
-    
+      tags:
+        - payments
+  /payments/complete/{payment_uuid}:
+    get:
+      description: 'Закрыть успешный заказ '
+      parameters:
+        - in: path
+          required: true 
+          name: payment_uuid
+          schema:
+            type: string
+            description: 'payment_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - payments
 
       
   
