@@ -24,6 +24,27 @@ tags:
 
 components:
   schemas:
+    vitamins:
+      type: object
+      properties:
+        jsondata:
+          type: object
+          properties:
+            jsondata:
+              type: object
+              properties:
+                name:
+                  type: "string"
+                labels:
+                  type: array
+                  items:
+                    type: integer
+    payment_action:
+      type: object
+      properties:
+        payment_id:
+          type: integer
+          example: 1
     checkup_booking:
       type: object
       properties:
@@ -1229,6 +1250,21 @@ paths:
           description: 'OK'
       tags:
         - forms
+  /worksheets/buying/vitamins:
+    post:
+      security:
+        - Bearer: []
+      description: 'Сформировать счет для покупки витаминов'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/vitamins"
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - forms
 
   /payments/{payment_uuid}:
     get:
@@ -1241,6 +1277,47 @@ paths:
             type: string
             description: 'payment_uuid'
             example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - payments
+  /payments/{payment_uuid}/action:
+    post:
+      description: 'Добавить продукт к заказу'
+      parameters:
+        - in: path
+          required: true 
+          name: payment_uuid
+          schema:
+            type: string
+            description: 'payment_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/payment_action"      
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - payments
+    delete:
+      description: 'Удалить продукт из заказа'
+      parameters:
+        - in: path
+          required: true 
+          name: payment_uuid
+          schema:
+            type: string
+            description: 'payment_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/payment_action"      
       responses:
         200:
           description: 'OK'
