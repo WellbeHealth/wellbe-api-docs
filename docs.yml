@@ -24,6 +24,24 @@ tags:
 
 components:
   schemas:
+    create_payment:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: integer
+            description: "product_id"
+          example: [1,2]
+        is_closed:
+          type: boolean
+        info:
+          type: object
+          description: "jsondata"
+        user:
+          type: integer
+          description: 'user_id'
+          example: null
     vitamins:
       type: object
       properties:
@@ -1339,7 +1357,27 @@ paths:
           description: 'OK'
       tags:
         - payments
-
+  /payments:
+      post:
+        description: 'Создать заказ'
+        parameters:
+          - in: query
+            required: false 
+            name: notify
+            schema:
+              type: string
+              description: 'Send notify to telegram'
+              example: 'True'
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/create_payment"      
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - payments
       
   
 
