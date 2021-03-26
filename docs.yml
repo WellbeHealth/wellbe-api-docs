@@ -17,14 +17,16 @@ tags:
     description: Colors HEX
   - name: experts
     description: Expert Profiles
-  - name: payments
+  - name: orders
     description: Заказы
   - name: forms
     description: Формы
+  - name: recommendations
+    description: Рекомендации
 
 components:
   schemas:
-    create_payment:
+    order:
       type: object
       properties:
         products:
@@ -1268,6 +1270,7 @@ paths:
           description: 'OK'
       tags:
         - forms
+
   /worksheets/buying/vitamins:
     post:
       security:
@@ -1284,80 +1287,44 @@ paths:
       tags:
         - forms
 
-  /payments/{payment_uuid}:
+  /orders/{order_uuid}:
     get:
       description: 'Получить данные заказа'
       parameters:
         - in: path
           required: true 
-          name: payment_uuid
+          name: order_uuid
           schema:
             type: string
-            description: 'payment_uuid'
+            description: 'order_uuid'
             example: '539843f3-051a-4b19-9082-0376a6a18280'
       responses:
         200:
           description: 'OK'
       tags:
-        - payments
-  /payments/{payment_uuid}/action:
-    post:
-      description: 'Добавить продукт к заказу'
-      parameters:
+        - orders
+    patch:
+        description: 'Отредактировать заказ'
+        parameters:
         - in: path
           required: true 
-          name: payment_uuid
+          name: order_uuid
           schema:
             type: string
-            description: 'payment_uuid'
+            description: 'order_uuid'
             example: '539843f3-051a-4b19-9082-0376a6a18280'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref:  "#/components/schemas/payment_action"      
-      responses:
-        200:
-          description: 'OK'
-      tags:
-        - payments
-    delete:
-      description: 'Удалить продукт из заказа'
-      parameters:
-        - in: path
-          required: true 
-          name: payment_uuid
-          schema:
-            type: string
-            description: 'payment_uuid'
-            example: '539843f3-051a-4b19-9082-0376a6a18280'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref:  "#/components/schemas/payment_action"      
-      responses:
-        200:
-          description: 'OK'
-      tags:
-        - payments
-  /payments/complete/{payment_uuid}:
-    get:
-      description: 'Закрыть успешный заказ '
-      parameters:
-        - in: path
-          required: true 
-          name: payment_uuid
-          schema:
-            type: string
-            description: 'payment_uuid'
-            example: '539843f3-051a-4b19-9082-0376a6a18280'
-      responses:
-        200:
-          description: 'OK'
-      tags:
-        - payments
-  /payments:
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/order"      
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - orders
+
+  /orders/:
       post:
         description: 'Создать заказ'
         parameters:
@@ -1372,12 +1339,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref:  "#/components/schemas/create_payment"      
+                $ref:  "#/components/schemas/order"      
         responses:
           200:
             description: 'OK'
         tags:
-          - payments
+          - orders
+      
+  
+  /recommendations/{recommendation_uuid}:
+    get:
+      description: 'Получить данные рекомендации'
+      parameters:
+        - in: path
+          required: true 
+          name: recommendation_uuid
+          schema:
+            type: string
+            description: 'recommendation_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - recommendations
       
   
 
