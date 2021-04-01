@@ -28,6 +28,15 @@ tags:
 
 components:
   schemas:
+    get_products:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: integer
+            description: "product_id"
+          example: [1,2]
     order:
       type: object
       properties:
@@ -1402,6 +1411,20 @@ paths:
             description: category name
             example: "Vitamins"
 
+      responses:
+        '200':
+          description: OK
+      tags:
+        - products
+  
+  /products/products:
+    post:
+      description: 'Получить список продуктов'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/get_products"
       responses:
         '200':
           description: OK
