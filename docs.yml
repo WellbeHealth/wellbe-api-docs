@@ -40,12 +40,17 @@ components:
     order:
       type: object
       properties:
-        products:
-          type: array
+        order_positions:
+          type: array 
           items:
-            type: integer
-            description: "product_id"
-          example: [1,2]
+            type: object
+            properties:
+              product_id:
+                type: integer
+                description: "product_id"
+              count:
+                type: integer
+          example: [{"product_id":1,"count":1}]
         is_closed:
           type: boolean
         info:
@@ -1324,6 +1329,13 @@ paths:
             type: string
             description: 'order_uuid'
             example: '539843f3-051a-4b19-9082-0376a6a18280'
+        - in: query
+          required: false 
+          name: notify
+          schema:
+            type: string
+            description: 'Send notify to telegram'
+            example: 'True'
         requestBody:
           content:
             application/json:
@@ -1425,6 +1437,34 @@ paths:
           application/json:
             schema:
               $ref:  "#/components/schemas/get_products"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - products
+  
+  /products/cart/price:
+    post:
+      description: 'Посчитать сумму продуктов'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                        description: 'product_id'
+                        example: 1
+                      count:
+                        type: integer
+                        example: 1
+                        
       responses:
         '200':
           description: OK
