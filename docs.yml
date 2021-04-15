@@ -1347,6 +1347,33 @@ paths:
         tags:
           - orders
 
+  /orders/{order_uuid}/use_promocode:
+    post:
+        description: 'Применить промокод в заказ'
+        parameters:
+        - in: path
+          required: true 
+          name: order_uuid
+          schema:
+            type: string
+            description: 'order_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                      token:
+                        type: string
+                        description: 'игорьлинк2021'
+
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - orders
+
   /orders/:
       post:
         description: 'Создать заказ'
@@ -1464,7 +1491,9 @@ paths:
                       count:
                         type: integer
                         example: 1
-                        
+                token:
+                  type: string
+                  description: 'промокод'                       
       responses:
         '200':
           description: OK
