@@ -25,6 +25,8 @@ tags:
     description: Товары
   - name: recommendations
     description: Рекомендации
+  - name: surveys
+    description: Анкеты
 
 components:
   schemas:
@@ -1499,7 +1501,95 @@ paths:
           description: OK
       tags:
         - products
-      
+  
+  /surveys/session/{survey_uuid}:
+    get:
+      description: 'Сгенерировать сессию для анкеты'
+      parameters:
+        - in: path
+          required: true 
+          name: session_id
+          schema:
+            type: integer
+            description: 'survey_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
+
+  /surveys/session/{session_id}/current:
+    get:
+      description: 'Получить текущую страницу сессии'
+      parameters:
+        - in: path
+          required: true 
+          name: session_id
+          schema:
+            type: integer
+            description: 'session_id'
+            example: 4
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
+  
+  /surveys/session/{session_id}/return:
+    get:
+      description: 'Вернуться на страницу назад в сессии'
+      parameters:
+        - in: path
+          required: true 
+          name: session_id
+          schema:
+            type: integer
+            description: 'session_id'
+            example: 4
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
+  
+  /surveys/session/{session_id}/next:
+    post:
+      description: 'Отправить ответы и перейти на следующую страницу в сессии'
+      parameters:
+        - in: path
+          required: true 
+          name: session_id
+          schema:
+            type: integer
+            description: 'session_id'
+            example: 4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        description: 'product_id'
+                        example: 'key'
+                      value:
+                        type: object
+                        properties:
+                          content:
+                            type: string
+                            example: 'hello'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
   
 
 
