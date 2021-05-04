@@ -1502,7 +1502,7 @@ paths:
       tags:
         - products
   
-  /surveys/session/{survey_uuid}:
+  /surveys/survey/{survey_uuid}:
     get:
       description: 'Сгенерировать сессию для анкеты'
       parameters:
