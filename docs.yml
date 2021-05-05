@@ -1273,6 +1273,25 @@ paths:
       tags:
         - forms
 
+  /worksheets/buying/recommendation:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить рекомендации по новой анкете'
+      parameters:
+        - in: query
+          name: session_id
+          description: session_id
+          example: 7
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - forms
+          
+
   /worksheets/buying/checkup_booking:
     post:
       security:
@@ -1590,6 +1609,23 @@ paths:
           description: OK
       tags:
         - surveys
+  
+  /recommendations/detailed_recommendation/{detailed_recommendation_uuid}:
+    get:
+      description: 'Получить подробную рекомендацию'
+      parameters:
+        - in: path
+          required: true 
+          name: detailed_recommendation_uuid
+          schema:
+            type: string
+            description: 'detailed_recommendation_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - recommendations
   
 
 
