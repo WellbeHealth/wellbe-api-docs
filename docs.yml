@@ -1545,9 +1545,9 @@ paths:
       parameters:
         - in: path
           required: true 
-          name: session_id
+          name: survey_uuid
           schema:
-            type: integer
+            type: string
             description: 'survey_uuid'
             example: '539843f3-051a-4b19-9082-0376a6a18280'
       responses:
