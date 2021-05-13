@@ -1303,6 +1303,18 @@ paths:
           example: 7
           schema:
             type: integer
+        - in: query
+          name: change_user_name
+          description: change_user_name
+          example: 'true'
+          schema:
+            type: string
+        - in: query
+          name: change_user_email
+          description: change_user_email
+          example: 'true'
+          schema:
+            type: string
       responses:
         200:
           description: 'OK'
