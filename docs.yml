@@ -27,6 +27,8 @@ tags:
     description: Рекомендации
   - name: surveys
     description: Анкеты
+  - name: reviews
+    description: Отзывы
 
 components:
   schemas:
@@ -1464,6 +1466,7 @@ paths:
           description: 'OK'
       tags:
         - recommendations
+
   /products/search:
     get:
       description: 'Получить список продуктов'
@@ -1662,6 +1665,49 @@ paths:
           description: 'OK'
       tags:
         - recommendations
+  
+  /reviews:
+    get:
+      description: 'Получить отзывы'
+      parameters:
+      - in: query
+        description: 'Строка поиска'
+        required: false
+        example: "жИзНь"
+        name: q
+        schema:
+          type: string
+      - in: query
+        description: limit
+        required: false
+        example: 100
+        name: limit
+        schema:
+          type: integer
+      - in: query
+        description: page
+        required: false
+        example: "Здоровье"
+        name: page
+        schema:
+          type: integer
+      - in: query
+        description: названия лейблов
+        required: false
+        example: 1
+        name: label_name
+        schema:
+          type: array
+          items: 
+            type: string
+            description: label_name
+            example: "Здоровье"
+
+      responses:
+        '200':
+          description: OK
+      tags:
+        - reviews
   
 
 
