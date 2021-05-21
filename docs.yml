@@ -29,6 +29,8 @@ tags:
     description: Анкеты
   - name: reviews
     description: Отзывы
+  - name: billing
+    description: Биллинг
 
 components:
   schemas:
@@ -1709,15 +1711,98 @@ paths:
       tags:
         - reviews
   
+  /billing/get_accounts:
+    get:
+      description: 'Получить счета пользователя'
 
-
-      
-
-
-      
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
   
+  /billing/{account_id}/history:
+    get:
+      description: 'Получить финансовую историю'
+      parameters:
+      - in: path
+        required: true 
+        name: account_id
+        schema:
+          type: integer
+          description: 'account_id'
+          example: 1
+      - in: query
+        description: limit
+        required: false
+        example: 100
+        name: limit
+        schema:
+          type: integer
+      - in: query
+        description: page
+        required: false
+        example: "Здоровье"
+        name: page
+        schema:
+          type: integer
 
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
+  
+  /billing/{account_id}/promocodes:
+    get:
+      description: 'Получить все промокоды'
+      parameters:
+      - in: path
+        required: true 
+        name: account_id
+        schema:
+          type: integer
+          description: 'account_id'
+          example: 1
 
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
+  
+  /billing/{account_id}/sum:
+    get:
+      description: 'Получить текущий баланс акка'
+      parameters:
+      - in: path
+        required: true 
+        name: account_id
+        schema:
+          type: integer
+          description: 'account_id'
+          example: 1
 
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
+  
+  /billing/{account_id}/withdraw_request:
+    get:
+      description: 'Запросить списание денег'
+      parameters:
+      - in: path
+        required: true 
+        name: account_id
+        schema:
+          type: integer
+          description: 'account_id'
+          example: 1
 
-
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
