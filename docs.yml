@@ -84,6 +84,10 @@ components:
           type: integer
           description: 'user_id'
           example: null
+        month:
+          type: integer
+          description: 'Количество месяцев'
+          example: 1
     vitamins:
       type: object
       properties:
@@ -1549,7 +1553,10 @@ paths:
                         example: 1
                 token:
                   type: string
-                  description: 'промокод'                       
+                  description: 'промокод'
+                month:
+                  type: integer
+                  description: 'Месяцы, необязательное поле, по умолчанию 1'
       responses:
         '200':
           description: OK
