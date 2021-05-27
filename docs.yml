@@ -1714,15 +1714,16 @@ paths:
   /billing/get_accounts:
     get:
       description: 'Получить счета пользователя'
-
       responses:
         '200':
           description: OK
       tags:
         - billing
   
-  /billing/{account_id}/history:
+  /billing/account/{account_id}/history:
     get:
+      security:
+        - Bearer: []
       description: 'Получить финансовую историю'
       parameters:
       - in: path
@@ -1753,8 +1754,10 @@ paths:
       tags:
         - billing
   
-  /billing/{account_id}/promocodes:
+  /billing/account/{account_id}/promocodes:
     get:
+      security:
+        - Bearer: []
       description: 'Получить все промокоды'
       parameters:
       - in: path
@@ -1771,8 +1774,10 @@ paths:
       tags:
         - billing
   
-  /billing/{account_id}/sum:
+  /billing/account/{account_id}/sum:
     get:
+      security:
+        - Bearer: []
       description: 'Получить текущий баланс акка'
       parameters:
       - in: path
@@ -1789,8 +1794,10 @@ paths:
       tags:
         - billing
   
-  /billing/{account_id}/withdraw_request:
+  /billing/account/{account_id}/withdraw_request:
     get:
+      security:
+        - Bearer: []
       description: 'Запросить списание денег'
       parameters:
       - in: path
