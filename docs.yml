@@ -1454,6 +1454,28 @@ paths:
             description: 'OK'
         tags:
           - orders
+  
+  /orders/create_subscription:
+      post:
+        description: 'Создать заказ на подписку'
+        parameters:
+          - in: query
+            required: false 
+            name: notify
+            schema:
+              type: string
+              description: 'Send notify to telegram'
+              example: 'True'
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/order"      
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - orders
       
   
   /recommendations/{recommendation_uuid}:
@@ -1533,6 +1555,39 @@ paths:
   /products/cart/price:
     post:
       description: 'Посчитать сумму продуктов'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                        description: 'product_id'
+                        example: 1
+                      count:
+                        type: integer
+                        example: 1
+                token:
+                  type: string
+                  description: 'промокод'
+                month:
+                  type: integer
+                  description: 'Месяцы, необязательное поле, по умолчанию 1'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - products
+  
+  /products/subscription/price:
+    post:
+      description: 'Посчитать стоимость подписки'
       requestBody:
         content:
           application/json:
