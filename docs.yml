@@ -1618,6 +1618,36 @@ paths:
       tags:
         - products
   
+  /products/subscription/pricing:
+    post:
+      description: 'Посчитать стоимость подписки'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                        description: 'product_id'
+                        example: 1
+                      count:
+                        type: integer
+                        example: 1
+                token:
+                  type: string
+                  description: 'промокод'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - products
+  
   /surveys/survey/{survey_uuid}:
     get:
       description: 'Сгенерировать сессию для анкеты'
