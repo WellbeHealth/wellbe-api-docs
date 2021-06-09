@@ -1476,6 +1476,23 @@ paths:
             description: 'OK'
         tags:
           - orders
+  
+  /orders/promocode/{promocode_uuid}:
+    get:
+      description: 'Получить промокод по uuid'
+      parameters:
+        - in: path
+          required: true 
+          name: promocode_uuid
+          schema:
+            type: string
+            description: 'promocode_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - orders
       
   
   /recommendations/{recommendation_uuid}:
