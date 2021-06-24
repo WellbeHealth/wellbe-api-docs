@@ -1681,6 +1681,28 @@ paths:
           description: OK
       tags:
         - surveys
+  
+  /surveys/survey/{survey_uuid}/start:
+    post:
+      description: 'Сгенерировать сессию для анкеты'
+      parameters:
+        - in: path
+          required: true 
+          name: survey_uuid
+          schema:
+            type: string
+            description: 'survey_uuid'
+            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/surveyanswers"  
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
 
   /surveys/session/{session_id}/current:
     get:
