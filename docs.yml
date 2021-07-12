@@ -1944,3 +1944,23 @@ paths:
           description: OK
       tags:
         - billing
+  
+  /billing/account/{account_id}/orders:
+    get:
+      security:
+        - Bearer: []
+      description: 'Список заказов для млм кабинета'
+      parameters:
+      - in: path
+        required: true 
+        name: account_id
+        schema:
+          type: integer
+          description: 'account_id'
+          example: 1
+
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
