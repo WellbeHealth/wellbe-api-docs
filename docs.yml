@@ -4,7 +4,9 @@ info:
   version: '1.0'
 servers:
   - url: https://api.wellbe.club/api/v1
+  - url: https://api.wellbe.club/
   - url: https://poly.wellbe.club/api/v1
+  - url: https://poly.wellbe.club/
   - url: https://localhost/api/v1
 tags:
   - name: users
@@ -297,8 +299,18 @@ components:
     refresh:
       type: object
       properties:
-        refresh:
+        grant_type:
           type: string
+          example: "refresh_token"
+        client_id:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
+        client_secret:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
+        refresh_token:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
     event_slaves:
       type: object
       properties:
@@ -587,25 +599,17 @@ paths:
       tags:
         - users
   
-  /users/auth/sign_in/refresh:
+  /o/token/:
     post:
       description: Обновить токен
       requestBody:
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/refresh'
       responses:
         '200':
           description: Authorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/jwt_tokens'
-        '401':
-          description: Unauthorized
-      tags:
-        - users
 
   /users/auth/reset_password:
     post:
@@ -1328,6 +1332,36 @@ paths:
           description: 'OK'
       tags:
         - forms
+  
+  /worksheets/buying/pool_recommendation:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить комбинированные рекомендации по анкете'
+      parameters:
+        - in: query
+          name: session_id
+          description: session_id
+          example: 7
+          schema:
+            type: integer
+        - in: query
+          name: change_user_name
+          description: change_user_name
+          example: 'true'
+          schema:
+            type: string
+        - in: query
+          name: change_user_email
+          description: change_user_email
+          example: 'true'
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - forms
           
 
   /worksheets/buying/checkup_booking:
@@ -1455,6 +1489,17 @@ paths:
         tags:
           - orders
   
+  /orders/my:
+      get:
+        security:
+          - Bearer: []
+        description: 'Получить мои заказы' 
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - orders
+  
   /orders/create_subscription:
       post:
         description: 'Создать заказ на подписку'
@@ -1495,17 +1540,11 @@ paths:
         - orders
       
   
-  /recommendations/{recommendation_uuid}:
+  /recommendations/my:
     get:
-      description: 'Получить данные рекомендации'
-      parameters:
-        - in: path
-          required: true 
-          name: recommendation_uuid
-          schema:
-            type: string
-            description: 'recommendation_uuid'
-            example: '539843f3-051a-4b19-9082-0376a6a18280'
+      security:
+          - Bearer: []
+      description: 'Получить мои рекомендации'
       responses:
         200:
           description: 'OK'
@@ -1665,24 +1704,7 @@ paths:
       tags:
         - products
   
-  /surveys/survey/{survey_uuid}:
-    get:
-      description: 'Сгенерировать сессию для анкеты'
-      parameters:
-        - in: path
-          required: true 
-          name: survey_uuid
-          schema:
-            type: string
-            description: 'survey_uuid'
-            example: '539843f3-051a-4b19-9082-0376a6a18280'
-      responses:
-        '200':
-          description: OK
-      tags:
-        - surveys
-  
-  /surveys/survey/{survey_uuid}/start:
+  /surveys/v2/survey/{survey_uuid}/start:
     post:
       description: 'Сгенерировать сессию для анкеты'
       parameters:
@@ -1704,7 +1726,7 @@ paths:
       tags:
         - surveys
 
-  /surveys/session/{session_id}/current:
+  /surveys/v2/session/{session_id}/current:
     get:
       description: 'Получить текущую страницу сессии'
       parameters:
@@ -1721,24 +1743,7 @@ paths:
       tags:
         - surveys
   
-  /surveys/session/{session_id}/return:
-    get:
-      description: 'Вернуться на страницу назад в сессии'
-      parameters:
-        - in: path
-          required: true 
-          name: session_id
-          schema:
-            type: integer
-            description: 'session_id'
-            example: 4
-      responses:
-        '200':
-          description: OK
-      tags:
-        - surveys
-  
-  /surveys/session/{session_id}/next:
+  /surveys/v2/session/{session_id}/next:
     post:
       description: 'Отправить ответы и перейти на следующую страницу в сессии'
       parameters:
@@ -1760,7 +1765,7 @@ paths:
       tags:
         - surveys
   
-  /surveys/session/{session_id}/return_with_save:
+  /surveys/v2/session/{session_id}/return:
     post:
       description: 'Отправить ответы и перейти на предыдущую страницу в сессии'
       parameters:
