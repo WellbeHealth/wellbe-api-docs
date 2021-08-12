@@ -1522,6 +1522,20 @@ paths:
         tags:
           - orders
   
+  /orders/create_combined_box:
+      post:
+        description: 'Создать заказ на health box'
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref:  "#/components/schemas/order"      
+        responses:
+          200:
+            description: 'OK'
+        tags:
+          - orders
+  
   /orders/promocode/{promocode_uuid}:
     get:
       description: 'Получить промокод по uuid'
@@ -1644,6 +1658,39 @@ paths:
   /products/subscription/price:
     post:
       description: 'Посчитать стоимость подписки'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                        description: 'product_id'
+                        example: 1
+                      count:
+                        type: integer
+                        example: 1
+                token:
+                  type: string
+                  description: 'промокод'
+                month:
+                  type: integer
+                  description: 'Месяцы, необязательное поле, по умолчанию 1'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - products
+
+  /products/subscription/price/combined_box:
+    post:
+      description: 'Посчитать стоимость health box'
       requestBody:
         content:
           application/json:
