@@ -54,6 +54,28 @@ components:
                   content:
                     type: string
                     example: 'hello'
+    address:
+      type: object
+      properties:
+        user:
+          type: integer
+          description: "User id"
+        city:
+          type: string
+        street:
+          type: string
+        house:
+          type: string
+        building:
+          type: string
+        housing:
+          type: string
+        entrance:
+          type: string
+        flat:
+          type: string
+        floor:
+          type: string
     get_products:
       type: object
       properties:
@@ -680,6 +702,76 @@ paths:
           description: OK
         '400':
           description: Bad request
+      tags:
+        - users
+
+  /users/addresses/my:
+    get:
+      security: 
+        - Bearer: []   
+      description: 'Получить список моих адресов'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - users
+
+  /users/addresses/create:
+    post:
+      security: 
+        - Bearer: []   
+      description: 'Создать адрес'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/address"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - users
+
+  /users/addresses/{address_id}:
+    patch:
+      security: 
+        - Bearer: []   
+      description: 'Изменить адрес'
+      parameters:
+      - in: path
+        description: address_id
+        required: true
+        name: address_id
+        schema:
+          type: integer  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  "#/components/schemas/address"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Address does not exist
+      tags:
+        - users
+    delete:
+      security: 
+        - Bearer: []   
+      description: 'Удалить адрес'
+      parameters:
+      - in: path
+        description: address_id
+        required: true
+        name: address_id
+        schema:
+          type: integer  
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Address does not exist
       tags:
         - users
 
