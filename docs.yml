@@ -33,6 +33,8 @@ tags:
     description: Отзывы
   - name: billing
     description: Биллинг
+  - name: fake
+    description: Фейк данные
 
 components:
   schemas:
@@ -49,11 +51,8 @@ components:
                 description: 'key'
                 example: 'key1'
               value:
-                type: object
-                properties:
-                  content:
-                    type: string
-                    example: 'hello'
+                type: string
+                example: 'hello'
     address:
       type: object
       properties:
@@ -2108,3 +2107,33 @@ paths:
           description: OK
       tags:
         - billing
+
+  /users/fake/{user_id}:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить фейк профиль близнеца'
+      parameters:
+      - in: path
+        required: true 
+        name: user_id
+        schema:
+          type: integer
+          description: 'user_id'
+          example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - fake
+  
+  /users/fake/twins:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить фейк близнецов'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - fake
