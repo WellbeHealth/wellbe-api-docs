@@ -2327,7 +2327,7 @@ paths:
         - beauty-twins
   
   /diaries/create:
-    patch:
+    post:
       security:
         - Bearer: []
       description: 'Создать дневник'
