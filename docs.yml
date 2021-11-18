@@ -3,10 +3,10 @@ info:
   title: Wellbe API
   version: '1.0'
 servers:
-  - url: https://api.wellbe.club/api/v1
-  - url: https://api.wellbe.club/
-  - url: https://poly.wellbe.club/api/v1
-  - url: https://poly.wellbe.club/
+  - url: https://api.wellbe.app/api/v1
+  - url: https://api.wellbe.app/
+  - url: https://poly.wellbe.app/api/v1
+  - url: https://poly.wellbe.app/
   - url: https://localhost/api/v1
 tags:
   - name: users
