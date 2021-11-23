@@ -40,6 +40,14 @@ tags:
 
 components:
   schemas:
+    diary-action:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: integer
+            description: product_id
     diary:
       type: object
       properties:
@@ -2233,11 +2241,18 @@ paths:
       parameters:
         - in: query
           name: owner
-          description: Владелец дневника
+          description: Владелец дневника (Профиль)
           required: false
           schema:
             type: integer
-            description: user_id
+            description: twin_profile_id
+        - in: query
+          name: owner__user__id
+          description: Владелец дневника (User)
+          required: false
+          schema:
+            type: integer
+            description: user__id
         - in: query
           name: category
           description: Тип дневника
@@ -2409,6 +2424,66 @@ paths:
       responses:
         '200':
           description: OK
+      tags:
+        - beauty-twins
+  
+  /diaries/actions:
+    post:
+      security:
+        - Bearer: []
+      description: 'Добавить товары в дневник. Если указан user_id, то товары попадут в main дневник пользователя. Если указано два параметра, приоритет отдается diary_id'
+      parameters:
+      - in: query
+        name: diary_id
+        schema:
+          type: integer
+          description: 'diary_id'
+          example: 1
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+          description: 'user_id'
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/diary-action"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Укажите diary_id или user_id
+      tags:
+        - beauty-twins
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удалить товары из дневникв. Если указан user_id, то товары удалятся из main дневника пользователя. Если указано два параметра, приоритет отдается diary_id'
+      parameters:
+      - in: query
+        name: diary_id
+        schema:
+          type: integer
+          description: 'diary_id'
+          example: 1
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+          description: 'user_id'
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/diary-action"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Укажите diary_id или user_id
       tags:
         - beauty-twins
 
