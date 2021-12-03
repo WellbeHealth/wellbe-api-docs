@@ -619,44 +619,6 @@ paths:
             description: Вход не выполнен, подробности в msg
         tags:
           - users
-
-  /users/auth/sign_in/:
-    post:
-      description: Вход в систему
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/auth'
-      responses:
-        '200':
-          description: Authorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/jwt_tokens'
-        '401':
-          description: Unauthorized
-      tags:
-        - users
-
-  /users/auth/logout/:
-    post:
-      security:
-        - Bearer: []
-      description: Выход из системы
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/refresh'
-      responses:
-        '204':
-          description: Logged out
-        '401':
-          description: Unauthorized
-      tags:
-        - users
   
   /o/token/:
     post:
@@ -688,7 +650,7 @@ paths:
 
   /users/auth/reset_password/{reset_token}:
     post:
-      description: 'Подтверждает аккаунт'
+      description: 'Сбрасывает пароль'
       parameters:
       - in: path
         description: Token from reset_password email
@@ -2202,36 +2164,6 @@ paths:
           description: OK
       tags:
         - billing
-
-  /users/fake/{user_id}:
-    get:
-      security:
-        - Bearer: []
-      description: 'Получить фейк профиль близнеца'
-      parameters:
-      - in: path
-        required: true 
-        name: user_id
-        schema:
-          type: integer
-          description: 'user_id'
-          example: 1
-      responses:
-        '200':
-          description: OK
-      tags:
-        - fake
-  
-  /users/fake/twins:
-    get:
-      security:
-        - Bearer: []
-      description: 'Получить фейк близнецов'
-      responses:
-        '200':
-          description: OK
-      tags:
-        - fake
 
   /diaries:
     get:
