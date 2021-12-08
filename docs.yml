@@ -1453,6 +1453,36 @@ paths:
           description: 'OK'
       tags:
         - forms
+
+  /worksheets/buying/start_twins:
+    get:
+      security:
+        - Bearer: []
+      description: 'Отправить стартовую анкету по твинам'
+      parameters:
+        - in: query
+          name: session_id
+          description: session_id
+          example: 7
+          schema:
+            type: integer
+        - in: query
+          name: change_user_name
+          description: change_user_name
+          example: 'true'
+          schema:
+            type: string
+        - in: query
+          name: change_user_email
+          description: change_user_email
+          example: 'true'
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - forms
           
 
   /worksheets/buying/checkup_booking:
