@@ -1950,6 +1950,30 @@ paths:
           description: OK
       tags:
         - surveys
+  
+  /surveys/sessions:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить все сессии. Если не указан user_id, пользователь берется по токену. Чтобы понять, проходил ли юзер анкеты раньше, поставь only_finished=true и если в ответе будет пустой массив, значит юзер ничего не проходил'
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            type: string
+            description: 'user_id'
+            example: 1
+        - in: query
+          name: only_finished
+          schema:
+            type: string
+            description: 'Если true, показываются только завершенные анкеты'
+            example: 'true'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - surveys
 
   /surveys/v2/session/{session_id}/current:
     get:
