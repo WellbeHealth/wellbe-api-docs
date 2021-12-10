@@ -1686,51 +1686,53 @@ paths:
       tags:
         - recommendations
 
-  /products/search:
-    get:
-      description: 'Получить список продуктов'
-      parameters:
-      - in: query
-        description: 'Строка поиска'
-        required: false
-        example: "жИзНь"
-        name: q
-        schema:
-          type: string
-      - in: query
-        description: limit
-        required: false
-        example: 100
-        name: limit
-        schema:
-          type: integer
-      - in: query
-        description: page
-        required: false
-        example: 1
-        name: page
-        schema:
-          type: integer
-      - in: query
-        description: категории
-        required: false
-        example: 1
-        name: category
-        schema:
-          type: array
-          items: 
-            type: string
-            description: category name
-            example: "Vitamins"
+  # /products/search:
+  #   get:
+  #     description: 'Получить список продуктов'
+  #     parameters:
+  #     - in: query
+  #       description: 'Строка поиска'
+  #       required: false
+  #       example: "жИзНь"
+  #       name: q
+  #       schema:
+  #         type: string
+  #     - in: query
+  #       description: limit
+  #       required: false
+  #       example: 100
+  #       name: limit
+  #       schema:
+  #         type: integer
+  #     - in: query
+  #       description: page
+  #       required: false
+  #       example: 1
+  #       name: page
+  #       schema:
+  #         type: integer
+  #     - in: query
+  #       description: категории
+  #       required: false
+  #       example: 1
+  #       name: category
+  #       schema:
+  #         type: array
+  #         items: 
+  #           type: string
+  #           description: category name
+  #           example: "Vitamins"
 
-      responses:
-        '200':
-          description: OK
-      tags:
-        - products
+  #     responses:
+  #       '200':
+  #         description: OK
+  #     tags:
+  #       - products
   
   /products:
     get:
+      security:
+        - Bearer: []
       description: 'Поиск продуктов'
       parameters:
       - in: query
