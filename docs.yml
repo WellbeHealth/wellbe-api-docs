@@ -370,6 +370,24 @@ components:
         refresh_token:
           type: string
           example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
+    social:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          example: "convert_token"
+        client_id:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
+        client_secret:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
+        backend:
+          type: string
+          example: "apple-id"
+        token:
+          type: string
+          example: "zywAufNhTAhF6z3KHsIqBkdjspSDH9J2DXWFDlyR"
     event_slaves:
       type: object
       properties:
@@ -628,6 +646,18 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/refresh'
+      responses:
+        '200':
+          description: Authorized
+  
+  /o/convert-token/:
+    post:
+      description: Вход через соцсети
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/social'
       responses:
         '200':
           description: Authorized
@@ -1270,6 +1300,7 @@ paths:
           description: 'OK'
       tags:
         - experts
+
   /expert_profile/get_random_list:
     get:
       description: 'Выдает рандомных спецов'
@@ -1285,6 +1316,7 @@ paths:
           description: 'OK'
       tags:
         - experts
+
   /products/{product_id}:
     get:
       description: 'Дает данные о продукте'
@@ -1304,6 +1336,31 @@ paths:
       responses:
         200:
           description: 'OK'
+      tags:
+        - products
+  
+  /products/rate:
+    post:
+      description: 'Оценить товар'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  example: 1
+                rating:
+                  type: integer
+                  example: 3
+                  description: 'В пределах 0 - 5'
+      responses:
+        200:
+          description: 'OK'
+      tags:
+        - products
+
   /texts/{text_id}:
     get:
       description: 'Дает строку текста'
