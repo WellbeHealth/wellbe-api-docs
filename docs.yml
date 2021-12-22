@@ -1334,6 +1334,8 @@ paths:
   
   /products/rate:
     post:
+      security:
+        - Bearer: []
       description: 'Оценить товар'
       requestBody:
         content:
