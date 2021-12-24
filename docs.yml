@@ -37,6 +37,8 @@ tags:
     description: Близнецы
   - name: fake
     description: Фейк данные
+  - name: community
+    description: Сообщество
 
 components:
   schemas:
@@ -513,6 +515,31 @@ components:
           items:
             type: integer
             description: 'label_id'
+    post:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        images:
+          type: array
+          items:
+            type: integer
+            description: image_id
+    comment:
+      type: object
+      properties:
+        post:
+          type: integer
+          description: post_id
+        text:
+          type: string
+        images:
+          type: array
+          items:
+            type: integer
+            description: image_id
           
   securitySchemes:
     Bearer:
@@ -2527,4 +2554,187 @@ paths:
       tags:
         - beauty-twins
 
+  /posts/create:
+    post:
+      security:
+        - Bearer: []
+      description: 'Создать пост'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/post"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
   
+  /comments/create:
+    post:
+      security:
+        - Bearer: []
+      description: 'Создать коммент'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/comment"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
+  
+  /posts/:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить список постов'
+      parameters:
+      - in: query
+        name: creator
+        schema:
+          type: integer
+          description: 'user_id'
+      - in: query
+        name: id
+        schema:
+          type: integer
+      - in: query
+        name: min_datetime
+        schema:
+          type: string
+          description: 'ISO datetime'
+          example: '2020-11-09T10:52:44.751187Z'
+      - in: query
+        name: max_datetime
+        schema:
+          type: string
+          description: 'ISO datetime'
+          example: '2023-11-09T10:52:44.751187Z'
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          oneOf:
+            - id
+            - -id
+            - created_at
+            - -created_at
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
+
+  /comments/:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить список постов'
+      parameters:
+      - in: query
+        name: creator
+        schema:
+          type: integer
+          description: 'user_id'
+      - in: query
+        name: post__id
+        schema:
+          type: integer
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          oneOf:
+            - id
+            - -id
+            - created_at
+            - -created_at
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
+  
+  /posts/{post_id}:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить пост'
+      parameters:
+      - in: path
+        required: true 
+        name: post_id
+        schema:
+          type: integer
+          description: 'post_id'
+          example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удалить пост (only if you owner)'
+      parameters:
+      - in: path
+        required: true 
+        name: post_id
+        schema:
+          type: integer
+          description: 'post_id'
+          example: 1
+      responses:
+        '204':
+          description: OK
+      tags:
+        - community
+  
+  /comments/{comment_id}:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить коммент'
+      parameters:
+      - in: path
+        required: true 
+        name: comment_id
+        schema:
+          type: integer
+          description: 'comment_id'
+          example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - community
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удалить коммент (only if you owner)'
+      parameters:
+      - in: path
+        required: true 
+        name: comment_id
+        schema:
+          type: integer
+          description: 'comment_id'
+          example: 1
+      responses:
+        '204':
+          description: OK
+      tags:
+        - community
+    
