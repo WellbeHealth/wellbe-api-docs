@@ -2475,6 +2475,12 @@ paths:
             type: integer
             description: 'user_id'
             example: 1
+        - in: query
+          name: skip
+          schema:
+            type: string
+            description: 'Ставить ли плейсхолдер'
+            example: false
       requestBody:
         content:
           multipart/form-data:
