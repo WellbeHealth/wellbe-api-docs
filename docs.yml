@@ -1033,6 +1033,86 @@ paths:
       tags:
         - products
   
+  /products/twins/recommendations/all:
+    get:
+        security:
+          - Bearer: []
+        description: 'Получить рекомендации товаров по всем категориям'
+        parameters:
+        - in: query
+          description: 'user_id'
+          required: true
+          example: 13
+          name: user_id
+          schema:
+            type: integer
+        - in: query
+          description: 'Сколько категорий показать'
+          required: false
+          example: 10
+          name: page_size
+          schema:
+            type: integer
+        - in: query
+          description: 'Сколько товаров в каждой категории'
+          required: false
+          example: 5
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          description: 'Номер страницы'
+          required: false
+          example: 2
+          name: page
+          schema:
+            type: integer
+        responses:
+          '200':
+            description: OK
+        tags:
+        - products
+  
+  /products/twins/recommendations/category:
+    get:
+        security:
+          - Bearer: []
+        description: 'Получить рекомендации товаров по всем категориям'
+        parameters:
+        - in: query
+          description: 'user_id'
+          required: true
+          example: 13
+          name: user_id
+          schema:
+            type: integer
+        - in: query
+          description: 'Сколько товаров показать'
+          required: false
+          example: 10
+          name: page_size
+          schema:
+            type: integer
+        - in: query
+          description: 'ID Категории'
+          required: true
+          example: 8
+          name: category_id
+          schema:
+            type: integer
+        - in: query
+          description: 'Номер страницы'
+          required: false
+          example: 2
+          name: page
+          schema:
+            type: integer
+        responses:
+          '200':
+            description: OK
+        tags:
+        - products
+  
   /surveys/v2/survey/{survey_uuid}/start:
     post:
       description: 'Сгенерировать сессию для анкеты'
