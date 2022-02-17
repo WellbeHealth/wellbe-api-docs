@@ -21,6 +21,8 @@ tags:
     description: Близнецы
   - name: community
     description: Сообщество
+  - name: billing
+  - name: referals
 
 components:
   schemas:
@@ -1733,3 +1735,41 @@ paths:
       responses:
         '200':
           description: OK
+  
+  /referals/usertoken:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить реферальный код'
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            description: 'user_id'
+            example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - referals
+  
+  /billing/useraccount:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить баланс на счету'
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            description: 'user_id'
+            example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - billing
