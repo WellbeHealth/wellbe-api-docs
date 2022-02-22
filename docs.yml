@@ -23,6 +23,7 @@ tags:
     description: Сообщество
   - name: billing
   - name: referals
+  - name: changelog
 
 components:
   schemas:
@@ -1773,3 +1774,109 @@ paths:
           description: OK
       tags:
         - billing
+  
+  /users/follow:
+    post:
+      security:
+        - Bearer: []
+      description: 'Подписаться на кого-то'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                following_user:
+                  type: integer
+                  description: user_id
+      responses:
+        '201':
+          description: OK
+      tags:
+        - users
+  
+  /following/{following_id}:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить подписку'
+      parameters:
+      - in: path
+        required: true 
+        name: following_id
+        schema:
+          type: integer
+          description: 'following_id'
+          example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - users
+    delete:
+      security:
+        - Bearer: []
+      description: 'Отписаться'
+      parameters:
+      - in: path
+        required: true 
+        name: following_id
+        schema:
+          type: integer
+          description: 'following_id'
+          example: 1
+      responses:
+        '204':
+          description: OK
+      tags:
+        - users
+  
+  /changelog:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить список постов'
+      parameters:
+      - in: query
+        name: user
+        schema:
+          type: integer
+          description: 'user_id'
+      - in: query
+        name: record_id
+        schema:
+          type: integer
+      - in: query
+        name: model
+        schema:
+          type: string
+      - in: query
+        name: action_on_model
+        schema:
+          type: string
+      - in: query
+        name: min_datetime
+        schema:
+          type: string
+      - in: query
+        name: max_datetime
+        schema:
+          type: string
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          # oneOf:
+          #   - id
+          #   - -id
+          #   - created_at
+          #   - -created_at
+      responses:
+        '200':
+          description: OK
+      tags:
+        - changelog
