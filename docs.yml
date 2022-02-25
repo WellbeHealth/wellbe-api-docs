@@ -24,6 +24,7 @@ tags:
   - name: billing
   - name: referals
   - name: changelog
+  - name: reviews
 
 components:
   schemas:
@@ -35,6 +36,30 @@ components:
           items:
             type: integer
             description: product_id
+    review:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: integer
+            description: image_id
+        text:
+          type: string
+          description: 'Review text. max(2500) symbols'
+        product:
+          type: integer
+          description: product_id
+        rating:
+          type: object
+          properties:
+            product:
+              type: integer
+              description: product_id
+            rate:
+              type: integer
+              description: 'rating 0-5'
+              example: 4
     diary:
       type: object
       properties:
@@ -1613,6 +1638,10 @@ paths:
         schema:
           type: integer
       - in: query
+        name: page
+        schema:
+          type: integer
+      - in: query
         name: ordering
         schema:
           type: string
@@ -1925,3 +1954,122 @@ paths:
           description: OK
       tags:
         - changelog
+
+  /reviews:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить отзывы'
+      parameters:
+      - in: query
+        name: creator
+        schema:
+          type: integer
+          description: 'user_id'
+          example: 1
+      - in: query
+        name: product
+        schema:
+          type: integer
+          description: 'product_id'
+          example: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: page
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          # oneOf:
+          #   - id
+          #   - -id
+          #   - created_at
+          #   - -created_at
+      - in: query
+        name: min_datetime
+        schema:
+          type: string
+          description: 'ISO datetime'
+          example: '2019-11-09T10:52:44.751187Z'
+      - in: query
+        name: max_datetime
+        schema:
+          type: string
+          description: 'ISO datetime'
+          example: '2023-11-09T10:52:44.751187Z'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - reviews
+
+  /reviews/create:  
+    post:
+      security:
+        - Bearer: []
+      description: 'Создать пост'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/review"
+      responses:
+        '201':
+          description: OK
+      tags:
+        - reviews
+  
+  /reviews/{review_id}:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить отзыв'
+      parameters:
+      - in: path
+        required: true 
+        name: review_id
+        schema:
+          type: integer
+          description: 'review_id'
+          example: 1
+      responses:
+        '200':
+          description: OK
+      tags:
+        - reviews
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удалить отзыв'
+      parameters:
+      - in: path
+        required: true 
+        name: review_id
+        schema:
+          type: integer
+          description: 'review_id'
+          example: 1
+      responses:
+        '204':
+          description: OK
+      tags:
+        - reviews
+    patch:
+      security:
+        - Bearer: []
+      description: 'Отредактировать отзыв'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/review"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - reviews
