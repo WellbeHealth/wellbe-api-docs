@@ -1366,6 +1366,32 @@ paths:
       tags:
         - beauty-twins
   
+  /users/twins/profiles/all:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получение профилей твинов'
+      parameters:
+      - in: query
+        required: false 
+        name: is_twins
+        schema:
+          type: string
+          description: 'is_twins'
+          example: 'true'
+      - in: query
+        required: false 
+        name: is_following
+        schema:
+          type: string
+          description: 'is_following'
+          example: 'true'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+  
   /users/twins/profile/{user_id}:
     get:
       security:
@@ -1756,6 +1782,25 @@ paths:
       tags:
         - referals
   
+  /referals/use_token:
+    get:
+      security:
+        - Bearer: []
+      description: 'Использовать реферальный код'
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema:
+            type: string
+            description: 'token'
+            example: 'FD43DR'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - referals
+  
   /billing/useraccount:
     get:
       security:
@@ -1795,7 +1840,7 @@ paths:
       tags:
         - users
   
-  /following/{following_id}:
+  /users/following/{following_id}:
     get:
       security:
         - Bearer: []
