@@ -36,6 +36,17 @@ components:
           items:
             type: integer
             description: product_id
+    diary-position:
+      type: object
+      properties:
+        product:
+          type: integer
+          description: product_id
+        diary:
+          type: integer
+          description: diary_id
+        order_number:
+          type: integer
     review:
       type: object
       properties:
@@ -1274,7 +1285,7 @@ paths:
           required: false
           schema:
             type: string
-            description: 'side or main'
+            description: 'side, main, wishlist'
             example: main
         - in: query
           name: id
@@ -1366,6 +1377,104 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/diary"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+  
+  /diaries/position/create:
+    post:
+      security:
+        - Bearer: []
+      description: 'Создать запись в дневнике'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/diary-position"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+  
+  /diaries/position/{position_id}:
+    patch:
+      security:
+        - Bearer: []
+      description: 'Отредактировать запись в дневнике'
+      parameters:
+      - in: path
+        required: true 
+        name: position_id
+        schema:
+          type: integer
+          description: 'position_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/diary-position"
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить запись в дневнике'
+      parameters:
+      - in: path
+        required: true 
+        name: position_id
+        schema:
+          type: integer
+          description: 'position_id'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+    delete:
+      security:
+        - Bearer: []
+      description: 'Удалить запись в дневнике'
+      parameters:
+      - in: path
+        required: true 
+        name: position_id
+        schema:
+          type: integer
+          description: 'position_id'
+      responses:
+        '200':
+          description: OK
+      tags:
+        - beauty-twins
+  
+  /positions:
+    get:
+      security:
+        - Bearer: []
+      description: 'Получить записи дневника'
+      parameters:
+        - in: query
+          name: diary
+          description: Id дневника
+          required: true
+          schema:
+            type: integer
+            description: diary_id
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+        - in: query
+          name: page
+          schema:
+            type: integer
       responses:
         '200':
           description: OK
@@ -1601,6 +1710,10 @@ paths:
           example: '2023-11-09T10:52:44.751187Z'
       - in: query
         name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: page
         schema:
           type: integer
       - in: query
